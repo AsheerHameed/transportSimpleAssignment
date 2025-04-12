@@ -1,0 +1,330 @@
+/* app.component.scss */
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h1, h2 {
+    color: #333;
+    text-align: center;
+  }
+  
+  .form-container {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .trip-form-row {
+    margin-bottom: 15px;
+  }
+  
+  .trip-form-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .input-group {
+    flex: 1;
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+    
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      text-transform: uppercase;
+      
+      &:focus {
+        outline: none;
+        border-color: #4169E1;
+        box-shadow: 0 0 0 2px rgba(65, 105, 225, 0.2);
+      }
+    }
+  }
+  
+  .remove-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-top: 20px;
+    
+    &:hover {
+      background-color: #ff3333;
+    }
+    
+    .icon {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      
+      &:hover:not(:disabled) {
+        opacity: 0.9;
+      }
+      
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+    
+    .add-btn {
+      background-color: #4CAF50;
+      color: white;
+      display: flex;
+      align-items: center;
+      
+      .icon {
+        margin-right: 5px;
+        font-size: 18px;
+      }
+    }
+    
+    .submit-btn {
+      background-color: #4169E1;
+      color: white;
+      flex: 1;
+    }
+    
+    .reset-btn {
+      background-color: #f8f9fa;
+      border: 1px solid #ddd;
+      color: #333;
+    }
+  }
+  
+  .visualization-container {
+    background-color: white;
+    padding: 30px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    
+    h2 {
+      margin-top: 0;
+      margin-bottom: 25px;
+    }
+  }
+  
+  // Trip visualization styles
+  .trip-visualization {
+    display: flex;
+    flex-direction: column;
+    gap: 60px; // Space between levels
+  }
+  
+  .level-container {
+    position: relative;
+    
+    .trips-row {
+      display: flex;
+      align-items: center;
+      min-height: 30px;
+    }
+  }
+  
+  .trip-item {
+    display: flex;
+    align-items: center;
+    position: relative;
+    
+    &.connected {
+      margin-left: -12px; // Adjust for connected trips to overlap
+    }
+    
+    .point-circle {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid;
+      background-color: white;
+      z-index: 2;
+    }
+    
+    .start-circle {
+      border-color: #4169E1; // Blue for level 1
+      z-index: 3;
+    }
+    
+    .end-circle {
+      border-color: #4169E1; // Blue for level 1
+      z-index: 3;
+    }
+    
+    .connector {
+      height: 2px;
+      width: 120px; // Default width
+      margin: 0 -2px; // Slight overlap with circles
+      z-index: 1;
+      
+      &.normal-line {
+        background-color: #4169E1; // Blue
+      }
+      
+      &.arrow-line {
+        background-color: #4169E1; // Blue
+        position: relative;
+        
+        &:after {
+          content: '';
+          position: absolute;
+          right: -6px;
+          top: -4px;
+          width: 0;
+          height: 0;
+          border-top: 5px solid transparent;
+          border-bottom: 5px solid transparent;
+          border-left: 8px solid #4169E1;
+        }
+      }
+      
+      &.curve-line {
+        background-color: #F39C12; // Orange for curved lines
+        position: relative;
+        height: 50px; // Height for curve
+        border-radius: 50% 50% 0 0;
+        border-top: 2px solid #F39C12;
+        border-left: 2px solid transparent;
+        border-right: 2px solid transparent;
+        background-color: transparent;
+        margin-top: 25px;
+      }
+      
+      &.level-2 {
+        .trip-item .start-circle, 
+        .trip-item .end-circle {
+          border-color: #F39C12; // Orange for level 2
+        }
+      }
+      
+      &.level-3 {
+        .trip-item .start-circle, 
+        .trip-item .end-circle {
+          border-color: #9B59B6; // Purple for level 3
+        }
+      }
+    }
+    
+    .trip-label {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      font-weight: bold;
+      white-space: nowrap;
+      
+      &.level-1 {
+        color: #4169E1; // Blue
+      }
+      
+      &.level-2 {
+        color: #F39C12; // Orange
+      }
+      
+      &.level-3 {
+        color: #9B59B6; // Purple
+      }
+    }
+  }
+  
+  [data-level="1"] {
+    .point-circle {
+      border-color: #4169E1; // Blue for level 1
+    }
+    
+    .connector {
+      &.normal-line, &.arrow-line {
+        background-color: #4169E1;
+      }
+      
+      &.arrow-line:after {
+        border-left-color: #4169E1;
+      }
+    }
+    
+    .trip-label {
+      color: #4169E1;
+    }
+  }
+  
+  [data-level="2"] {
+    .point-circle {
+      border-color: #F39C12; // Orange for level 2
+    }
+    
+    .connector {
+      &.normal-line, &.arrow-line {
+        background-color: #F39C12;
+      }
+      
+      &.arrow-line:after {
+        border-left-color: #F39C12;
+      }
+      
+      &.curve-line {
+        border-top-color: #F39C12;
+      }
+    }
+    
+    .trip-label {
+      color: #F39C12;
+    }
+  }
+  
+  [data-level="3"] {
+    .point-circle {
+      border-color: #9B59B6; // Purple for level 3+
+    }
+    
+    .connector {
+      &.normal-line, &.arrow-line {
+        background-color: #9B59B6;
+      }
+      
+      &.arrow-line:after {
+        border-left-color: #9B59B6;
+      }
+      
+      &.curve-line {
+        border-top-color: #9B59B6;
+      }
+    }
+    
+    .trip-label {
+      color: #9B59B6;
+    }
+  }

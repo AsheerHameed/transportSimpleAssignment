@@ -1,0 +1,75 @@
+<!-- app.component.html -->
+<div class="app-container">
+  <h1>{{ title }}</h1>
+  
+  <div class="form-container">
+    <form [formGroup]="tripForm" (ngSubmit)="submitTrips()">
+      <div formArrayName="trips">
+        <div *ngFor="let trip of tripFormArray.controls; let i = index" class="trip-form-row">
+          <div [formGroupName]="i" class="trip-form-group">
+            <div class="input-group">
+              <label for="from-{{i}}">From:</label>
+              <input id="from-{{i}}" type="text" formControlName="from" placeholder="e.g. BLR" maxlength="3">
+            </div>
+            
+            <div class="input-group">
+              <label for="to-{{i}}">To:</label>
+              <input id="to-{{i}}" type="text" formControlName="to" placeholder="e.g. MAA" maxlength="3">
+            </div>
+            
+            <button type="button" class="remove-btn" (click)="removeTripForm(i)" *ngIf="tripFormArray.length > 1">
+              <span class="icon">×</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" class="add-btn" (click)="addTripForm()">
+          <span class="icon">+</span> Add Trip
+        </button>
+        
+        <button type="submit" [disabled]="!tripForm.valid" class="submit-btn">
+          Submit
+        </button>
+        
+        <button type="button" class="reset-btn" (click)="resetForm()">
+          Reset
+        </button>
+      </div>
+    </form>
+  </div>
+  
+  <div class="visualization-container" *ngIf="processedTrips.length > 0">
+    <h2>Trip Visualization</h2>
+    
+    <div class="trip-visualization">
+      <div *ngFor="let level of getLevels().reverse()" class="level-container" [attr.data-level]="level">
+        <div class="trips-row">
+          <ng-container *ngFor="let trip of getTripsForLevel(level); let i = index">
+            <div class="trip-item" [ngClass]="{'connected': trip.connected}">
+              <div class="point-circle start-circle" *ngIf="!trip.connected"></div>
+              
+              <div class="connector" [ngClass]="{
+                'normal-line': trip.type === 'normal',
+                'arrow-line': trip.type === 'arrow',
+                'curve-line': trip.type === 'curve',
+                'level-1': trip.level === 1,
+                'level-2': trip.level === 2,
+                'level-3': trip.level >= 3
+              }"></div>
+              
+              <!-- End circle -->
+              <div class="point-circle end-circle"></div>
+              
+              <!-- Trip label -->
+              <div class="trip-label" [ngClass]="{'level-1': trip.level === 1, 'level-2': trip.level === 2, 'level-3': trip.level >= 3}">
+                {{ getTripLabel(trip) }}
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
